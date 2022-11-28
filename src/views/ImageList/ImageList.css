@@ -1,0 +1,18 @@
+.imagelist {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+
+    &__image-card {
+        width: 300px;
+
+        img {
+            border: 2px solid white;
+            box-sizing: border-box;
+            /* We know the size of the image so we don't see a pop effect */
+            width: 300px;
+            height: 170.5px;
+            /* */
+        }
+    }
+}

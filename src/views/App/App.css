@@ -1,0 +1,12 @@
+#root {
+  max-width: 1280px;
+  padding: 2rem;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.card {
+  padding: 2em;
+}

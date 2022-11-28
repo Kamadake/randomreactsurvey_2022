@@ -1,0 +1,76 @@
+{
+    "form": {
+        "pages": [
+            [
+                {
+                    "id": "name",
+                    "label": "Name",
+                    "type": "input"
+                },
+                {
+                    "id": "email",
+                    "label": "Email",
+                    "type": "input"
+                }
+            ],
+            [
+                {
+                    "id": "age",
+                    "label": "Age",
+                    "required": true,
+                    "type": "select",
+                    "values": {
+                        "from": "16",
+                        "to": "100"
+                    }
+                },
+                {
+                    "id": "gender",
+                    "label": "Gender",
+                    "required": true,
+                    "type": "radio",
+                    "values": [
+                        ["male", "Male"],
+                        ["female", "Female"],
+                        ["nonbinary", "Non-Binary"],
+                        ["donotdisclose", "Do Not Disclose"]
+                    ]
+                }
+            ],
+            [
+                {
+                    "id": "favouritebook",
+                    "label": "Favourite Book",
+                    "required": true
+                },
+                {
+                    "id": "favouritecolor",
+                    "label": "Favourite Color",
+                    "required": true,
+                    "type": "checkbox",
+                    "values": [
+                        ["black", "Black"],
+                        ["white", "White"],
+                        ["gray", "Gray"],
+                        ["silver", "Silver"],
+                        ["maroon", "Maroon"],
+                        ["red", "Red"],
+                        ["purple", "Purple"],
+                        ["fushsia", "Fushsia"],
+                        ["green", "Green"],
+                        ["lime", "Lime"],
+                        ["olive", "Olive"],
+                        ["yellow", "Yellow"],
+                        ["navy", "Navy"],
+                        ["blue", "Blue"],
+                        ["teal", "Teal"],
+                        ["aqua", "Aqua"]
+                    ],
+                    "options": {
+                        "includeOtherInput": false
+                    }
+                }
+            ]
+        ]
+    }
+}
