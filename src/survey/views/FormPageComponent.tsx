@@ -1,5 +1,5 @@
 import { ChangeEvent, ChangeEventHandler, useEffect, useState } from 'react';
-import type { FormPage } from '../formtypes';
+import type { FormCheckbox, FormInput, FormPage, FormRadio, FormSelect } from '../formtypes';
 
 type FormPageArguments = {
     page: FormPage;
@@ -17,6 +17,7 @@ export function FormPageComponent({page, handleInputUpdate, results}: FormPageAr
     const fieldRenders = (page.map((inputField) => {
         switch(inputField.type) {
             case "input": {
+                inputField as FormInput;
                 return (
                     <div key={inputField.id} className='surveyform--inputtext'>
                         <label htmlFor={inputField.id}>{inputField.label}</label>
@@ -25,6 +26,7 @@ export function FormPageComponent({page, handleInputUpdate, results}: FormPageAr
                 )
             }
             case "radio": {
+                inputField as FormRadio;
                 const radiobuttons = inputField.values.map(([key, value]) => (
                     <li key={key}>
                         <input onChange={handleInput} type="radio" id={`${inputField.id}_${key}`} checked={results[inputField.id] === key ? true : false} value={key} name={inputField.id} />
@@ -38,6 +40,7 @@ export function FormPageComponent({page, handleInputUpdate, results}: FormPageAr
                 )
             }
             case "checkbox": {
+                inputField as FormCheckbox;
                 const checkboxes = inputField.values.map(([key, value]) => (
                     <li key={key}>
                         <input onChange={handleInput} type="checkbox" id={`${inputField.id}_${key}`} checked={results[inputField.id]?.includes(key) ? true : false}  value={key} name={inputField.id} />
@@ -51,7 +54,29 @@ export function FormPageComponent({page, handleInputUpdate, results}: FormPageAr
                 )
             }
             case "select": {
-                return (<div key={inputField.id} className='surveyform--select'>Select here</div>)
+                inputField as FormSelect;
+                let selectOptions;
+                if (Array.isArray(inputField.values)) {
+                    selectOptions = inputField.values.map(([key, value]) => (
+                        <option key={key} value={key}>{value}</option>
+                    ))
+                } else {
+                    const {to, from} = inputField.values;
+                    selectOptions = [...Array(to - from + 1).keys()].map((value, index) => {
+                        const numValue = from + index;
+                        return (
+                            <option key={numValue} value={numValue}>{numValue}</option>
+                        )
+                    });
+                } 
+                return (
+                    <div key={inputField.id} className='surveyform--select'>
+                        <label>{inputField.label}</label>
+                        <select onChange={handleInput} name={inputField.id} value={results[inputField.id] ?? ''}>
+                            {selectOptions}
+                        </select>
+                    </div>
+                )
             }
         }
     }));
