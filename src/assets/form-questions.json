@@ -20,8 +20,8 @@
                     "required": true,
                     "type": "select",
                     "values": {
-                        "from": "16",
-                        "to": "100"
+                        "from": 16,
+                        "to": 100
                     }
                 },
                 {
@@ -41,6 +41,7 @@
                 {
                     "id": "favouritebook",
                     "label": "Favourite Book",
+                    "type": "input",
                     "required": true
                 },
                 {
