@@ -1,4 +1,4 @@
-import { FormWelcome } from '../formtypes'
+import type { FormWelcome } from '@surveytypes';
 
 type FormWelcomeComponentArguments = {
     title: string;

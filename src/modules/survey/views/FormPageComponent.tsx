@@ -1,5 +1,6 @@
-import { ChangeEvent, ChangeEventHandler, useEffect, useState } from 'react';
-import type { FormCheckbox, FormInput, FormInputTypes, FormPage, FormRadio, FormSelect } from '../formtypes';
+import { ChangeEvent } from 'react';
+import type { FormCheckbox, FormInput, FormInputTypes, FormPage, FormRadio, FormSelect } from '@surveytypes';
+import "./FormPageComponent.css";
 
 type FormPageArguments = {
     page: FormPage;
@@ -16,13 +17,16 @@ export function FormPageComponent({page, results, handleInputUpdate, handlePrev,
         handleInputUpdate({id: inputElement.name, value: inputElement.value, type: inputElement.type as FormInputTypes});
     }
 
+    const requiredElement = (<span className='surveyform--required'>*</span>);
+
     const fieldRenders = (page.map((inputField) => {
+        const requiredMark = inputField.required ? requiredElement : null;
         switch(inputField.type) {
             case "input": {
                 inputField as FormInput;
                 return (
-                    <div key={inputField.id} className='surveyform--inputtext'>
-                        <label htmlFor={inputField.id}>{inputField.label}</label>
+                    <div key={inputField.id} className='surveyform--inputfield surveyform--inputtext'>
+                        <label htmlFor={inputField.id}>{inputField.label}{requiredMark}</label>
                         <input onChange={handleInput} name={inputField.id} type="input" value={results[inputField.id] ?? ''} />
                     </div>
                 )
@@ -36,9 +40,12 @@ export function FormPageComponent({page, results, handleInputUpdate, handlePrev,
                     </li>
                 ));
                 return (
-                    <ul key={inputField.id} className='surveyform--radiobuttons'>
-                        {radiobuttons}
-                    </ul>
+                    <div key={inputField.id} className='surveyform--inputfield surveyform--radiobuttons'>
+                        <label>{inputField.label}{requiredMark}</label>
+                        <ul>
+                            {radiobuttons}
+                        </ul>
+                    </div>
                 )
             }
             case "checkbox": {
@@ -50,9 +57,12 @@ export function FormPageComponent({page, results, handleInputUpdate, handlePrev,
                     </li>
                 ));
                 return (
-                    <ul key={inputField.id} className='surveyform--checkboxes'>
-                        {checkboxes}
-                    </ul>
+                    <div key={inputField.id} className='surveyform--inputfield surveyform--checkboxes'>
+                        <label>{inputField.label}{requiredMark}</label>
+                        <ul>
+                            {checkboxes}
+                        </ul>
+                    </div>
                 )
             }
             case "select": {
@@ -72,8 +82,8 @@ export function FormPageComponent({page, results, handleInputUpdate, handlePrev,
                     });
                 } 
                 return (
-                    <div key={inputField.id} className='surveyform--select'>
-                        <label>{inputField.label}</label>
+                    <div key={inputField.id} className='surveyform--inputfield surveyform--select'>
+                        <label>{inputField.label}{requiredMark}</label>
                         <select onChange={handleInput} name={inputField.id} value={results[inputField.id] ?? ''}>
                             {selectOptions}
                         </select>
@@ -82,11 +92,12 @@ export function FormPageComponent({page, results, handleInputUpdate, handlePrev,
             }
         }
     }));
-    
 
     return (
-        <div className='surveyform--inputfields'>
-            {fieldRenders}
+        <div className='surveyform--inputpage'>
+            <div className='surveyform--inputfields'>
+                {fieldRenders}
+            </div>
             <div className='surveyform--formactions'>
                 <button onClick={handlePrev} disabled={handlePrev ? false : true}  className='button'>Prev</button>
                 <button onClick={handleNext} className='button'>Next</button>

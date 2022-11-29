@@ -1,0 +1,35 @@
+.surveyform--inputfields {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.surveyform--required {
+    color: rgb(184, 61, 61);
+}
+
+.surveyform--inputtext, .surveyform--select {
+    label { display: block; }
+}
+
+.surveyform--radiobuttons, .surveyform--checkboxes {
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li input { margin-right: 5px; }
+    }
+}
+
+.surveyform--inputtext {
+    input { font-size: 1em; }
+}
+
+.surveyform--select {
+    select { font-size: 1em; }
+}
+
+.surveyform--formactions {
+    margin-top: 20px;
+}

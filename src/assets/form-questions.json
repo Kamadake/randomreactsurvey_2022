@@ -1,5 +1,6 @@
 {
     "form": {
+        "timeBeforeVisibleInSeconds": 2,
         "id": "generalsurvey",
         "title": "General Questionnaire",
         "welcome": {
@@ -51,7 +52,7 @@
                 },
                 {
                     "id": "favouritecolor",
-                    "label": "Favourite Color",
+                    "label": "Favourite Colors",
                     "required": true,
                     "type": "checkbox",
                     "values": [

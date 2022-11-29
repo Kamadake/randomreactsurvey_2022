@@ -1,0 +1,8 @@
+.surveyWidget {
+    min-width: 300px;
+}
+
+.surveyform--formactions {
+    display: flex;
+    justify-content: space-between;
+}

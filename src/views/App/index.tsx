@@ -3,17 +3,21 @@ import './App.css'
 import { ImageList } from '../ImageList'
 import { Modal } from '../../components/Modal'
 import jsonForm from '../../assets/form-questions.json';
-import type { FormData } from "../../survey/formtypes";
-import { Survey } from '../../survey';
-// const LazySurvey = React.lazy(() => import('../../survey'));
+import type { FormData } from '@surveytypes';
+
+const ModuleSurvey = window.ModuleSurvey;
 
 export function App() {
   const [formData, setFormData] = useState<FormData | null>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
 
   useEffect(() => {
-    setShowModal(true);
-  }, [FormData]);
+    if (formData) {
+      // Data might tell us to defer the modal's visiblity
+      // setTimeout(() => setShowModal(true), formData.form.timeBeforeVisibleInSeconds * 1000);
+      setShowModal(true);
+    }
+  }, [formData]);
 
   /**
    * Let's assume that on load of the site, we make a web call to our server
@@ -40,7 +44,7 @@ export function App() {
         <ImageList />
       </section>
       <Modal open={showModal}>
-        <Survey data={formData ?? null} />
+        <ModuleSurvey data={formData ?? null} />
       </Modal>
     </div>
   )
