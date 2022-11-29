@@ -7,15 +7,15 @@ import ReactDom from 'react-dom';
 type modalArguments = {
     open: boolean,
     children: JSX.Element | JSX.Element[] | null,
-    onClose?: Function
+    handleClose?: (() => void) | undefined;
 }
 
-export function Modal({ open, children, onClose }: modalArguments) {
+export function Modal({ open, children, handleClose }: modalArguments) {
     if (!open || children === null) return null;
 
     return ReactDom.createPortal(
         <div className='modal animate--fadein'>
-            <div className='modal__background' />
+            <div onClick={handleClose} className='modal__background' />
             <div className='modal__container'>
                 {children}
             </div>

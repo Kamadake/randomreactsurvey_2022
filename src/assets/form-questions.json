@@ -22,7 +22,7 @@
             [
                 {
                     "id": "age",
-                    "label": "Choose your age:",
+                    "label": "Choose your age",
                     "required": true,
                     "type": "select",
                     "values": {

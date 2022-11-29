@@ -33,3 +33,12 @@
 .surveyform--formactions {
     margin-top: 20px;
 }
+
+.surveyform--errormsg {
+    background-color: rgb(129, 45, 45);
+    border-radius: 0.5rem;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    margin-bottom: 1rem;
+}

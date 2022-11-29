@@ -9,11 +9,12 @@ import "./survey.css";
 
 type SurveyArguments = {
     data: FormData | null;
+    handleSubmit: (() => void) | undefined;
 }
 
 const cookies = new Cookies();
 
-export function Survey({data}: SurveyArguments) {
+export function Survey({data, handleSubmit}: SurveyArguments) {
     if (!data) { return null;}
 
     const form = data.form;
@@ -37,7 +38,8 @@ export function Survey({data}: SurveyArguments) {
     }
 
     const onSubmitButton = () => {
-        cookies.set(cookieDoneName, surveyState);
+        cookies.set(cookieDoneName, true);
+        handleSubmit?.();
     }
 
     // Run once to check if we had an empty object state so that we populate it
@@ -117,6 +119,7 @@ export function Survey({data}: SurveyArguments) {
                         ? <FormSummaryComponent formData={data.form} surveyResults={surveyState.results} handlePrev={onPrevButton} handleSubmit={onSubmitButton} /> 
                         : <FormPageComponent 
                             page={form.pages[surveyState.currentPage - 1]} 
+                            pageIndex={surveyState.currentPage - 1}
                             results={surveyState.results} 
                             handleInputUpdate={onDataUpdate} 
                             handlePrev={surveyState.currentPage - 1 ? onPrevButton : undefined} 

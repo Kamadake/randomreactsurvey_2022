@@ -1,16 +1,19 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useMemo, useState } from 'react';
 import type { FormCheckbox, FormInput, FormInputTypes, FormPage, FormRadio, FormSelect } from '@surveytypes';
 import "./FormPageComponent.css";
 
 type FormPageArguments = {
     page: FormPage;
+    pageIndex: number;
     results: any;
     handleInputUpdate: (Object: {id: string, value: string, type: FormInputTypes}) => void;
     handlePrev: (() => void) | undefined;
     handleNext: (() => void) | undefined;
 }
 
-export function FormPageComponent({page, results, handleInputUpdate, handlePrev, handleNext}: FormPageArguments) {
+export function FormPageComponent({page, pageIndex, results, handleInputUpdate, handlePrev, handleNext}: FormPageArguments) {
+    const [showError, setShowError] = useState(false);
+
     const handleInput = (event: ChangeEvent) => {
         const inputElement = event.target as HTMLInputElement;
         console.log(inputElement.value);
@@ -19,7 +22,19 @@ export function FormPageComponent({page, results, handleInputUpdate, handlePrev,
 
     const requiredElement = (<span className='surveyform--required'>*</span>);
 
-    const fieldRenders = (page.map((inputField) => {
+    const beforeSwitchPage = (handlePageChange: (() => void) | undefined) => {
+        let allRequiredFilledIn = true;
+        page.forEach(field => {
+            if (field.required && results[field.id].length === 0) {
+                allRequiredFilledIn = false;
+            }
+        });
+        
+        setShowError(!allRequiredFilledIn);
+        allRequiredFilledIn && handlePageChange?.();
+    }
+
+    const fieldRenders = useMemo(() => (page.map((inputField) => {
         const requiredMark = inputField.required ? requiredElement : null;
         switch(inputField.type) {
             case "input": {
@@ -91,16 +106,17 @@ export function FormPageComponent({page, results, handleInputUpdate, handlePrev,
                 )
             }
         }
-    }));
+    })), [pageIndex]);
 
     return (
         <div className='surveyform--inputpage'>
+            <span className='surveyform--errormsg' style={{display: showError ? 'block' : 'none'}}>Please fill in all required fields</span>
             <div className='surveyform--inputfields'>
                 {fieldRenders}
             </div>
             <div className='surveyform--formactions'>
-                <button onClick={handlePrev} disabled={handlePrev ? false : true}  className='button'>Prev</button>
-                <button onClick={handleNext} className='button'>Next</button>
+                <button onClick={() => beforeSwitchPage(handlePrev)} disabled={handlePrev ? false : true}  className='button'>Prev</button>
+                <button onClick={() => beforeSwitchPage(handleNext)} className='button'>Next</button>
             </div>
         </div>
     )
