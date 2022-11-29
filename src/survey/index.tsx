@@ -1,7 +1,9 @@
 import React, { useState, useEffect, ChangeEventHandler } from 'react';
 import { FormPageComponent } from './views/FormPageComponent';
+import { FormWelcomeComponent } from './views/FormWelcomeComponent';
 import type { FormData, FormInputTypes } from './formtypes';
 import Cookies from 'universal-cookie';
+import { FormSummaryComponent } from './views/FormSummaryComponent';
 
 type SurveyArguments = {
     data: FormData | null;
@@ -12,7 +14,6 @@ type SurveyData = {
 }
 
 const cookies = new Cookies();
-const cookieName = "yield-surveyform";
 
 export function Survey({data}: SurveyArguments) {
     if (!data) { return null;}
@@ -20,17 +21,18 @@ export function Survey({data}: SurveyArguments) {
     // const [surveyResults, setSurveyResults] = useState<Map<string, string>>(new Map());
     const [currentPageIndex, setCurrentPageIndex] = useState<number>(0);
     const form = data.form;
+    const cookieName = `surveyresults_${form.id}`;
     
     const [surveyState, setSurveyState] = useState<SurveyData>(cookies.get(cookieName) ?? {});
+    // I'll only show the welcome page if the object is still blank, that means it's never been visited
 
     const onPrevButton = () => {
         console.log('back');
-        setCurrentPageIndex((prevValue) => (prevValue) === 0 ? prevValue : prevValue - 1)
+        setCurrentPageIndex((prevValue) => prevValue - 1)
     }
 
     const onNextButton = () => {
-        console.log('next');
-        setCurrentPageIndex((prevValue) => (prevValue + 1) === form.pages.length ? prevValue : prevValue + 1)
+        setCurrentPageIndex((prevValue) => {console.log(prevValue + 1); return prevValue + 1;});
     }
 
     useEffect(() => {
@@ -66,11 +68,17 @@ export function Survey({data}: SurveyArguments) {
     return (
         <div className='surveyWidget'>
             <div className='pageContainer'>
-                <FormPageComponent page={form.pages[currentPageIndex]} results={surveyState} handleInputUpdate={onDataUpdate} />
-            </div>
-            <div className='surveyform--formactions'>
-                <button onClick={onPrevButton} className='button' disabled={currentPageIndex === 0 ? true : false}>Prev</button>
-                <button onClick={onNextButton} className='button'>Next</button>
+                { currentPageIndex ? 
+                    (currentPageIndex === form.pages.length + 1 
+                        ? <FormSummaryComponent /> 
+                        : <FormPageComponent 
+                            page={form.pages[currentPageIndex - 1]} 
+                            results={surveyState} 
+                            handleInputUpdate={onDataUpdate} 
+                            handlePrev={currentPageIndex - 1 ? onPrevButton : undefined} 
+                            handleNext={onNextButton} />) 
+                        : <FormWelcomeComponent title={form.title} welcome={form.welcome} handleStart={onNextButton} />
+                }
             </div>
         </div>
     )

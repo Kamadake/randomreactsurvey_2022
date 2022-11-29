@@ -38,6 +38,15 @@ export type FormField = (FormInput | FormRadio | FormCheckbox | FormSelect);
 
 export type FormPage = FormField[];
 
+export type FormWelcome = {
+    description: string;
+}
+
 export type FormData = {
-    form: { pages: FormPage[]; };
+    form: {
+        id: string;
+        title: string;
+        welcome: FormWelcome;
+        pages: FormPage[]; 
+    };
 };

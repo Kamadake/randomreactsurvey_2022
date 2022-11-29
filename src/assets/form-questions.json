@@ -1,5 +1,10 @@
 {
     "form": {
+        "id": "generalsurvey",
+        "title": "General Questionnaire",
+        "welcome": {
+            "description": "We would like to ask you a few questions in order to get to know our readers more! It will only take a minute and we will not bother you again!"
+        },
         "pages": [
             [
                 {

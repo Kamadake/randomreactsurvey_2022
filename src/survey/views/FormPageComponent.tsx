@@ -1,17 +1,19 @@
 import { ChangeEvent, ChangeEventHandler, useEffect, useState } from 'react';
-import type { FormCheckbox, FormInput, FormPage, FormRadio, FormSelect } from '../formtypes';
+import type { FormCheckbox, FormInput, FormInputTypes, FormPage, FormRadio, FormSelect } from '../formtypes';
 
 type FormPageArguments = {
     page: FormPage;
-    handleInputUpdate: Function;
     results: any;
+    handleInputUpdate: (Object: {id: string, value: string, type: FormInputTypes}) => void;
+    handlePrev: (() => void) | undefined;
+    handleNext: (() => void) | undefined;
 }
 
-export function FormPageComponent({page, handleInputUpdate, results}: FormPageArguments) {
+export function FormPageComponent({page, results, handleInputUpdate, handlePrev, handleNext}: FormPageArguments) {
     const handleInput = (event: ChangeEvent) => {
         const inputElement = event.target as HTMLInputElement;
         console.log(inputElement.value);
-        handleInputUpdate({id: inputElement.name, value: inputElement.value, type: inputElement.type});
+        handleInputUpdate({id: inputElement.name, value: inputElement.value, type: inputElement.type as FormInputTypes});
     }
 
     const fieldRenders = (page.map((inputField) => {
@@ -85,6 +87,10 @@ export function FormPageComponent({page, handleInputUpdate, results}: FormPageAr
     return (
         <div className='surveyform--inputfields'>
             {fieldRenders}
+            <div className='surveyform--formactions'>
+                <button onClick={handlePrev} disabled={handlePrev ? false : true}  className='button'>Prev</button>
+                <button onClick={handleNext} className='button'>Next</button>
+            </div>
         </div>
     )
 }
