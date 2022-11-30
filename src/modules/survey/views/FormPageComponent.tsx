@@ -11,17 +11,24 @@ type FormPageArguments = {
     handleNext: (() => void) | undefined;
 }
 
+/**
+ * FormPageComponent is responsible for rendering the input fields by receiving the page from the survey parent.
+ */
 export function FormPageComponent({page, pageIndex, results, handleInputUpdate, handlePrev, handleNext}: FormPageArguments) {
     const [showError, setShowError] = useState(false);
 
     const handleInput = (event: ChangeEvent) => {
         const inputElement = event.target as HTMLInputElement;
-        console.log(inputElement.value);
         handleInputUpdate({id: inputElement.name, value: inputElement.value, type: inputElement.type as FormInputTypes});
     }
 
     const requiredElement = (<span className='surveyform--required'>*</span>);
 
+    /**
+     * Any checks such as required fields filled in or error checking can be performed
+     * from here
+     * @param handlePageChange The prev or next handler to call if all fields are valid
+     */
     const beforeSwitchPage = (handlePageChange: (() => void) | undefined) => {
         let allRequiredFilledIn = true;
         page.forEach(field => {
@@ -34,6 +41,11 @@ export function FormPageComponent({page, pageIndex, results, handleInputUpdate, 
         allRequiredFilledIn && handlePageChange?.();
     }
 
+    /**
+     * Here we are grabbing every field given by the form json data and transforming them
+     * into JSX elements. The below might be cleaner if we made them as components for survey
+     * or if we had a UI Elements module to pull components from.
+     */
     const fieldRenders = useMemo(() => (page.map((inputField) => {
         const requiredMark = inputField.required ? requiredElement : null;
         switch(inputField.type) {
@@ -106,7 +118,7 @@ export function FormPageComponent({page, pageIndex, results, handleInputUpdate, 
                 )
             }
         }
-    })), [pageIndex]);
+    })), [pageIndex, results]);
 
     return (
         <div className='surveyform--inputpage'>

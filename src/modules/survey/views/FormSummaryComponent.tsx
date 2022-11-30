@@ -8,6 +8,11 @@ type FormSummaryComponentArguments = {
     handleSubmit: (() => void) | undefined;
 }
 
+/**
+ * FormSummaryComponent is responsible of receiving all the results and outputting a summary against the form data
+ * we originally received. If we were to submit, we would submit the results as they are, but the cross referencing
+ * below is happening due to potential language labels. (Maybe server sends me Portugese labels)
+ */
 export function FormSummaryComponent({formData, surveyResults, handlePrev, handleSubmit}: FormSummaryComponentArguments) {
     const renderResults = formData.pages.flatMap(page => {
         return page.map(field => {

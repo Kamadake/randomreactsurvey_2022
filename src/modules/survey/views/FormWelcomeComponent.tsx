@@ -6,6 +6,9 @@ type FormWelcomeComponentArguments = {
     handleStart: () => void;
 }
 
+/**
+ * Simple component to display a welcome message before starting with the survey form
+ */
 export function FormWelcomeComponent({title, welcome, handleStart}: FormWelcomeComponentArguments) {
     return (
         <div className='surveryform--welcomepage'>

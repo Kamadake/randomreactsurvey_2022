@@ -47,7 +47,7 @@ export function Survey({data, handleSubmit}: SurveyArguments) {
         if (!Object.keys(surveyState).length) {
             setSurveyState(() => {
                 const initialState: SurveyState = {
-                    currentPage: surveyState.currentPage,
+                    currentPage: 0,
                     results: {},
                 };
 

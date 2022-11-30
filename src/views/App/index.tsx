@@ -22,7 +22,6 @@ export function App() {
       if (!cookies.get(`surveydone_${formData.form.id}`)) {
         // Data might tell us to defer the modal's visiblity
         setTimeout(() => setShowModal(true), formData.form.timeBeforeVisibleInSeconds * 1000);
-        // setShowModal(true);
       }
     }
   }, [formData]);
